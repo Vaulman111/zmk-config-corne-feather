@@ -1,0 +1,41 @@
+name: Build Corne Feather Firmware
+
+on:
+  push:
+    paths:
+      - 'config/**'
+      - 'app/boards/shields/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+
+    with:
+      board: adafruit_feather_nrf52840/nrf52840/uf2
+      shield: corne_hw_left
+      extra-build-args: -d build_left
+
+  build-right:
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+
+    with:
+      board: adafruit_feather_nrf52840/nrf52840/uf2
+      shield: corne_hw_right
+      extra-build-args: -d build_right
+
+  upload:
+    needs: [build, build-right]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: '*'
+          merge-multiple: true
+
+      - name: Upload all UF2
+        uses: actions/upload-artifact@v4
+        with:
+          name: corne-feather-firmware
+          path: artifacts/**/*.uf2

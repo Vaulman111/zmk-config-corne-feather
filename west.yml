@@ -1,0 +1,10 @@
+west:
+  manifest:
+    project: zmk
+    remote: zmkfirmware
+    url: https://github.com/zmkfirmware/zmk.git
+    revision: v1.5
+    import:
+      - name: zephyr
+        url: https://github.com/zmkfirmware/zephyr.git
+        revision: v3.5.0+zmk-fixes

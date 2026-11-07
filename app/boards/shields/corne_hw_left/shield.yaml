@@ -1,0 +1,9 @@
+zmk:
+  description: Corne HW Left shield for Feather nRF52840
+  vendor: vostoklabs
+  features:
+    - keys
+    - gpio
+  siblings:
+    - corne_hw_right
+  name: corne_hw_left

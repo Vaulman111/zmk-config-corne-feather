@@ -1,0 +1,28 @@
+/ {
+    chosen { zmk,kscan = &kscan0; };
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN_RIGHT";
+        row-gpios = <&gpio0 26 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&gpio1 8  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&gpio0 7  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+        col-gpios = <&gpio0 2  GPIO_ACTIVE_HIGH>,
+                    <&gpio0 3  GPIO_ACTIVE_HIGH>,
+                    <&gpio0 4  GPIO_ACTIVE_HIGH>,
+                    <&gpio0 5  GPIO_ACTIVE_HIGH>,
+                    <&gpio0 28 GPIO_ACTIVE_HIGH>,
+                    <&gpio0 30 GPIO_ACTIVE_HIGH>;
+        diode-direction = "col2row";
+        debounce-press-ms = <5>;
+        debounce-release-ms = <5>;
+        wakeup-source;
+    };
+    matrix_transform {
+        compatible = "zmk,matrix-transform";
+        columns = <6>;
+        rows = <4>;
+        map = <0 1 2 3 4 5  6 7 8 9 10 11  12 13 14 15 16 17  18 19 20 21 22 23>;
+    };
+};
