@@ -5,8 +5,8 @@ west:
     project: zmk
     remote: zmkfirmware
     url: https://github.com/zmkfirmware/zmk.git
-    revision: v1.5
+    revision: main
     import:
       - name: zephyr
         url: https://github.com/zmkfirmware/zephyr.git
-        revision: v3.5.0+zmk-fixes
+        revision: main
