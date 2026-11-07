@@ -1,7 +1,8 @@
 ---
-- board: nice_nano/nrf52840
-  shield: corne_left
-  artifact-name: corne-left
-- board: nice_nano/nrf52840
-  shield: corne_right
-  artifact-name: corne-right
+include:
+  - board: nice_nano/nrf52840
+    shield: corne_left
+    artifact-name: corne-left
+  - board: nice_nano/nrf52840
+    shield: corne_right
+    artifact-name: corne-right
