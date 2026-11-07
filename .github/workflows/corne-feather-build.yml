@@ -1,14 +1,6 @@
-name: Build Corne Feather Firmware
-
-on:
-  push:
-    paths:
-      - 'config/**'
-      - 'build.yaml'
-      - 'app/boards/**'
-      - '.github/**'
-  workflow_dispatch:
+name: Build ZMK firmware
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
