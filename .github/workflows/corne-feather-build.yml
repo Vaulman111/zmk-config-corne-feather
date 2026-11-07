@@ -4,18 +4,12 @@ on:
   push:
     paths:
       - 'config/**'
-      - 'app/boards/shields/**'
   workflow_dispatch:
 
 jobs:
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
-    strategy:
-      matrix:
-        board-shield:
-          - { board: nice_nano/nrf52840, shield: corne_hw_left, output: corne-left }
-          - { board: nice_nano/nrf52840, shield: corne_hw_right, output: corne-right }
     with:
-      board: ${{ matrix.board-shield.board }}
-      shield: ${{ matrix.board-shield.shield }}
-      extra-build-args: -d build_${{ matrix.board-shield.output }}
+      board-shield: |
+        nice_nano/nrf52840+corne_left
+        nice_nano/nrf52840+corne_right
