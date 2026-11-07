@@ -10,32 +10,12 @@ on:
 jobs:
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
-
+    strategy:
+      matrix:
+        board-shield:
+          - { board: nice_nano/nrf52840, shield: corne_hw_left, output: corne-left }
+          - { board: nice_nano/nrf52840, shield: corne_hw_right, output: corne-right }
     with:
-      board: adafruit_feather_nrf52840/nrf52840/uf2
-      shield: corne_hw_left
-      extra-build-args: -d build_left
-
-  build-right:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
-
-    with:
-      board: adafruit_feather_nrf52840/nrf52840/uf2
-      shield: corne_hw_right
-      extra-build-args: -d build_right
-
-  upload:
-    needs: [build, build-right]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-          pattern: '*'
-          merge-multiple: true
-
-      - name: Upload all UF2
-        uses: actions/upload-artifact@v4
-        with:
-          name: corne-feather-firmware
-          path: artifacts/**/*.uf2
+      board: ${{ matrix.board-shield.board }}
+      shield: ${{ matrix.board-shield.shield }}
+      extra-build-args: -d build_${{ matrix.board-shield.output }}
