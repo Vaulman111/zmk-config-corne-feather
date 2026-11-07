@@ -1,13 +1,6 @@
-# SPDX-License-Identifier: Apache-2.0
-
 west:
   manifest:
     remote: zmkfirmware
-    project:
-      name: zmk
-      url: https://github.com/zmkfirmware/zmk.git
-      revision: main
-      import:
-        - name: zephyr
-          url: https://github.com/zmkfirmware/zephyr.git
-          revision: v4.1.0+zmk-fixes
+    project: zmk
+    import:
+      - name: zephyr
