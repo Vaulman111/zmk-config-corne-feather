@@ -5,6 +5,7 @@ on:
     paths:
       - 'config/**'
       - 'build.yaml'
+      - 'app/boards/**'
   workflow_dispatch:
 
 jobs:
