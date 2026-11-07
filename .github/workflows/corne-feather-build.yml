@@ -6,6 +6,7 @@ on:
       - 'config/**'
       - 'build.yaml'
       - 'app/boards/**'
+      - '.github/**'
   workflow_dispatch:
 
 jobs:
