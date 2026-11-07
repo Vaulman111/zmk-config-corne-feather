@@ -9,4 +9,4 @@ west:
     import:
       - name: zephyr
         url: https://github.com/zmkfirmware/zephyr.git
-        revision: main
+        revision: v4.1.0+zmk-fixes
