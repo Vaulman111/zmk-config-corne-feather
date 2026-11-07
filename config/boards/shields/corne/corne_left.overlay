@@ -1,35 +1,18 @@
 /*
- * Feather nRF52840 GPIO pin overrides for Corne Left
- * This overlay overrides the GPIO matrix from the official corne.dtsi
+ * Copyright (c) 2020 Pete Johanson
+ *
+ * SPDX-License-Identifier: MIT
  */
 
-/ {
-    chosen {
-        zmk,kscan = &kscan0;
-    };
+#include "corne.dtsi"
 
-    kscan0: kscan {
-        compatible = "zmk,kscan-gpio-matrix";
-        label = "KSCAN_LEFT";
-        wakeup-source;
-        diode-direction = "col2row";
-        debounce-press-ms = <5>;
-        debounce-release-ms = <5>;
-
-        row-gpios
-            = <&gpio0 26 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&gpio1 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&gpio0 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            ;
-
-        col-gpios
-            = <&gpio0 2 GPIO_ACTIVE_HIGH>
-            , <&gpio0 3 GPIO_ACTIVE_HIGH>
-            , <&gpio0 4 GPIO_ACTIVE_HIGH>
-            , <&gpio0 5 GPIO_ACTIVE_HIGH>
-            , <&gpio0 28 GPIO_ACTIVE_HIGH>
-            , <&gpio0 30 GPIO_ACTIVE_HIGH>
-            ;
-    };
+&kscan0 {
+    col-gpios
+        = <&pro_micro 21 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 20 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 19 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 18 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 15 GPIO_ACTIVE_HIGH>
+        , <&pro_micro 14 GPIO_ACTIVE_HIGH>
+        ;
 };
