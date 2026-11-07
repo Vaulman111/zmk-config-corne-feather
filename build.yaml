@@ -1,0 +1,13 @@
+---
+build:
+  flatten: false
+  paths:
+    -
+      filter: true
+      board: nice_nano/nrf52840
+      shield: corne_left
+    -
+      filter: true
+      board: nice_nano/nrf52840
+      shield: corne_right
+format: 1
