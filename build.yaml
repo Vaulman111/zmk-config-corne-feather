@@ -1,13 +1,7 @@
 ---
-build:
-  flatten: false
-  paths:
-    -
-      filter: true
-      board: nice_nano/nrf52840
-      shield: corne_left
-    -
-      filter: true
-      board: nice_nano/nrf52840
-      shield: corne_right
-format: 1
+- board: nice_nano/nrf52840
+  shield: corne_left
+  artifact-name: corne-left
+- board: nice_nano/nrf52840
+  shield: corne_right
+  artifact-name: corne-right
