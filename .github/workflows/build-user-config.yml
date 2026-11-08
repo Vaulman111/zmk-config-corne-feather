@@ -48,6 +48,22 @@ jobs:
           echo "display_name=${shield:+$shield - }${board}" >> $GITHUB_ENV
           echo "artifact_name=${artifact_name:-${shield:+$shield-}${board}-zmk}" >> $GITHUB_ENV
 
+      - name: Delete corrupted Zephyr cache
+        shell: sh -x {0}
+        run: |
+          # Remove any pre-installed Zephyr cache that has bad refs
+          rm -rf /zephyr
+          rm -rf /home/runner/work/zmk-modules
+          find / -name ".west" -type d 2>/dev/null | xargs rm -rf 2>/dev/null || true
+
+      - name: West Init
+        shell: sh -x {0}
+        run: west init -l config
+
+      - name: West Update
+        shell: sh -x {0}
+        run: west update
+
       - name: West Build
         shell: sh -x {0}
         run: west build -s zmk/app -d "${{ env.build_dir }}" -b "${{ matrix.board }}" ${{ env.extra_west_args }} -- -DZMK_CONFIG=config ${{ env.extra_cmake_args }} ${{ matrix.cmake-args }}
