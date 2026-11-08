@@ -8,7 +8,5 @@ manifest:
     - name: zmk
       remote: zmkfirmware
       revision: v0.3
-      import:
-        path: app/west.yml
   self:
     path: config
