@@ -21,9 +21,7 @@ jobs:
           echo "build_matrix=$(yq -oj -I0 'build.yaml')" >> $GITHUB_ENV
 
   build:
-    runs-on: ubuntu-22.04
     needs: fetch-matrix
-    name: Build
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.fetch-matrix.outputs.build_matrix) }}
@@ -31,10 +29,8 @@ jobs:
       image: zmkfirmware/zmk-build-arm:stable
     steps:
       - uses: actions/checkout@v4
-
       - name: Create build directory
         run: echo "build_dir=$(mktemp -d)" >> $GITHUB_ENV
-
       - name: Prepare variables
         shell: sh -x {0}
         env:
@@ -51,82 +47,32 @@ jobs:
           else
             echo "base_dir=${GITHUB_WORKSPACE}" >> $GITHUB_ENV
           fi
-
           if [ -n "${snippet}" ]; then
             extra_west_args="-S \"${snippet}\""
           fi
-
-          echo "zephyr_version=${ZEPHYR_VERSION}" >> $GITHUB_ENV
           echo "extra_west_args=${extra_west_args}" >> $GITHUB_ENV
           echo "extra_cmake_args=${shield:+-DSHIELD=\"${shield}\"}${zmk_load_arg}" >> $GITHUB_ENV
           echo "display_name=${shield:+$shield - }${board}" >> $GITHUB_ENV
           echo "artifact_name=${artifact_name:-${shield:+$shield-}${board}-zmk}" >> $GITHUB_ENV
-
-      - name: Copy config files to isolated temporary directory
+      - name: Copy config files
         run: |
           if [ "${{ env.base_dir }}" != "${GITHUB_WORKSPACE}" ]; then
-            mkdir "${{ env.base_dir }}/${{ inputs.config_path }}"
-            cp -R ${{ inputs.config_path }}/* "${{ env.base_dir }}/${{ inputs.config_path }}/"
+            mkdir "${{ env.base_dir }}/config"
+            cp -R config/* "${{ env.base_dir }}/config/"
           fi
-
-      - name: Cache west modules
-        uses: actions/cache@v4
-        continue-on-error: true
-        env:
-          cache_name: cache-zephyr-${{ env.zephyr_version }}-modules
-        with:
-          path: |
-            ${{ env.base_dir }}/modules/
-            ${{ env.base_dir }}/tools/
-            ${{ env.base_dir }}/zephyr/
-            ${{ env.base_dir }}/bootloader/
-            ${{ env.base_dir }}/zmk/
-          key: ${{ runner.os }}-build-${{ env.cache_name }}-${{ hashFiles('**/west.yml', '**/build.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache_name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Delete corrupted Zephyr cache content
-        shell: sh -x {0}
-        if: success() || failure()
-        run: |
-          # The cache may have restored a corrupted zephyr directory.
-          # Delete it entirely so west can re-clone from scratch.
-          if [ -d zephyr ]; then
-            rm -rf zephyr
-            echo "Deleted corrupted zephyr cache"
-          fi
-          if [ -d .west ]; then
-            rm -rf .west
-          fi
-          if [ -d zmk ]; then
-            rm -rf zmk
-          fi
-          if [ -d modules ]; then
-            rm -rf modules
-          fi
-          if [ -d tools ]; then
-            rm -rf tools
-          fi
-
       - name: West Init
         working-directory: ${{ env.base_dir }}
-        run: west init -l "${{ env.base_dir }}/${{ inputs.config_path }}"
-
+        run: west init -l "${GITHUB_WORKSPACE}/config"
       - name: West Update
         working-directory: ${{ env.base_dir }}
         run: west update --fetch-opt=--filter=tree:0
-
       - name: West Zephyr export
         working-directory: ${{ env.base_dir }}
         run: west zephyr-export
-
       - name: West Build
         working-directory: ${{ env.base_dir }}
         shell: sh -x {0}
-        run: west build -s zmk/app -d "${{ env.build_dir }}" -b "${{ matrix.board }}" ${{ env.extra_west_args }} -- -DZMK_CONFIG=${{ env.base_dir }}/${{ inputs.config_path }} ${{ env.extra_cmake_args }} ${{ matrix.cmake-args }}
-
+        run: west build -s zmk/app -d "${{ env.build_dir }}" -b "${{ matrix.board }}" ${{ env.extra_west_args }} -- -DZMK_CONFIG=${{ env.base_dir }}/config ${{ env.extra_cmake_args }} ${{ matrix.cmake-args }}
       - name: Rename artifacts
         shell: sh -x {0}
         run: |
@@ -134,11 +80,7 @@ jobs:
           if [ -f "${{ env.build_dir }}/zephyr/zmk.uf2" ]
           then
             cp "${{ env.build_dir }}/zephyr/zmk.uf2" "${{ env.build_dir }}/artifacts/${{ env.artifact_name }}.uf2"
-          elif [ -f "${{ env.build_dir }}/zephyr/zmk.${{ inputs.fallback_binary }}" ]
-          then
-            cp "${{ env.build_dir }}/zephyr/zmk.${{ inputs.fallback_binary }}" "${{ env.build_dir }}/artifacts/${{ env.artifact_name }}.${{ inputs.fallback_binary }}"
           fi
-
       - name: Archive
         uses: actions/upload-artifact@v4
         with:
@@ -152,6 +94,6 @@ jobs:
     steps:
       - uses: actions/upload-artifact/merge@v4
         with:
-          name: ${{ inputs.archive_name }}
+          name: firmware
           pattern: artifact-*
           delete-merged: true
