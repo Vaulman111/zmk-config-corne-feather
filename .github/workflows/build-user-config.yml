@@ -51,14 +51,7 @@ jobs:
       - name: Delete corrupted Zephyr cache
         shell: sh -x {0}
         run: |
-          # Remove cache-corrupted Zephyr directory (wrong remote ref v3.5.0+zmk)
-          rm -rf zephyr
-          rm -rf .west
-          rm -rf modules
-          rm -rf tools
-          # Remove stale zmk cache too
-          rm -rf zmk
-          # Fresh start
+          rm -rf zephyr .west modules tools zmk
           echo "Cache cleared, starting fresh"
 
       - name: West Init
