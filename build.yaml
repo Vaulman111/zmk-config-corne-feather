@@ -1,8 +1,8 @@
 ---
 include:
-  - board: nice!nano nRF52840 SuperMin
+  - board: nice_nano
     shield: corne_left
     artifact-name: corne-left
-  - board: nice!nano nRF52840 SuperMin
+  - board: nice_nano
     shield: corne_right
     artifact-name: corne-right
