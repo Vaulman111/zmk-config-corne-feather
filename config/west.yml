@@ -7,7 +7,7 @@ manifest:
   projects:
     - name: zephyr
       remote: zephyrproject-rtos
-      revision: v3.5.0+zmk
+      revision: v3.5.0
       import: app/west.yml
     - name: zmk
       remote: zmkfirmware
