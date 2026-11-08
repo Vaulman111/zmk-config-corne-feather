@@ -4,5 +4,5 @@ include:
     shield: corne_left
     artifact-name: corne-left
   - board: nice_nano
-    shield: corne_right_standalone
-    artifact-name: corne-right-standalone
+    shield: corne_right
+    artifact-name: corne-right
