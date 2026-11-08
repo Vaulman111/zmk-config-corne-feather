@@ -1,4 +1,4 @@
-# ZMK Firmware Build Configuration v2.3 - Sputnik style
+# ZMK Firmware Build Configuration v3.2
 ---
 include:
   - board: nice_nano_v2
