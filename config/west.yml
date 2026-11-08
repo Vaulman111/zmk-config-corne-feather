@@ -5,6 +5,11 @@ manifest:
     - name: zephyrproject-rtos
       url-base: https://github.com/zephyrproject-rtos
   projects:
+    - name: zephyr
+      remote: zephyrproject-rtos
+      revision: v3.5.0+zmk
+      clone-depth: 1
+      import: app/west.yml
     - name: zmk
       remote: zmkfirmware
       revision: v0.3
