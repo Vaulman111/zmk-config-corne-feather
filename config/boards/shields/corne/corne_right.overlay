@@ -1,26 +1,19 @@
-/*
- * Copyright (c) 2020 Pete Johanson
- *
- * SPDX-License-Identifier: MIT
- */
-
-#include "corne.dtsi"
-
-&default_transform {
-    col-offset = <6>;
-};
-
-&five_column_transform {
-    col-offset = <6>;
-};
+/* Overlay Corne Droite - Pins Custom nRF52840 */
 
 &kscan0 {
-    col-gpios
-        = <&pro_micro 14 GPIO_ACTIVE_HIGH>
-        , <&pro_micro 15 GPIO_ACTIVE_HIGH>
-        , <&pro_micro 18 GPIO_ACTIVE_HIGH>
-        , <&pro_micro 19 GPIO_ACTIVE_HIGH>
-        , <&pro_micro 20 GPIO_ACTIVE_HIGH>
-        , <&pro_micro 21 GPIO_ACTIVE_HIGH>
-        ;
+    diode-direction = "col2row";
+
+    /* Rows (Lignes Vertes) : 29, 113, 10, 9 */
+    row-gpios = <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+               , <&gpio1 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+               , <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+               , <&gpio0 9  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+
+    /* Cols (Lignes Oranges) : 22, 24, 100, 11, 104, 106 */
+    col-gpios = <&gpio0 22 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+               , <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+               , <&gpio1 0  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+               , <&gpio0 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+               , <&gpio1 4  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+               , <&gpio1 6  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 };
