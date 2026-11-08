@@ -1,3 +1,5 @@
+# ZMK Firmware Build Configuration
+# Based on Sputnik Corne HW reference: https://github.com/vostoklabs/Sputnik-Handwired-Split-Corne-Keyboard-
 ---
 include:
   - board: nice_nano_v2
